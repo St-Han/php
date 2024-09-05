@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>后台管理页面</title>
+    <!-- 引入 Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* 自定义样式 */
+        #sidebar {
+            position: fixed; /* 使侧边栏固定 */
+            top: 0; /* 顶部对齐 */
+            left: 0; /* 左侧对齐 */
+            width: 250px; /* 侧边栏宽度 */
+            height: 100vh; /* 高度为视口高度 */
+            background-color: #343a40;
+            color: white;
+            overflow-y: auto; /* 如果内容过长，显示滚动条 */
+        }
+        #content {
+            margin-left: 250px; /* 内容区域的左边距与侧边栏宽度一致 */
+            padding: 20px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="d-flex">
+        <!-- 侧边栏 -->
+        <div id="sidebar" class="bg-dark">
+            <h4 class="text-center py-4">后台管理</h4>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#dashboard">仪表盘</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#user">用户管理</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">文献管理</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">设置</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">退出</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 内容区域 -->
+        <div id="content">
+            <!-- 顶部导航栏 -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand" id="management">管理系统</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">欢迎, 管理员</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- 仪表盘卡片 -->
+            <div class="row my-4" id="dashboard">
+                <div class="col-md-3" id="d">
+                    <div class="card text-white bg-primary mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">注册用户数</h5>
+                            <p class="card-text">150</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-white bg-success mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">收录文献</h5>
+                            <p class="card-text">500</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-white bg-warning mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">访问次数</h5>
+                            <p class="card-text">25,000</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-white bg-danger mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">用户反馈</h5>
+                            <p class="card-text">5</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 图表部分 -->
+            <div class="card">
+                <div class="card-header">
+                    访问次数折线图
+                </div>
+                <div class="card-body">
+                    <canvas id="lineChart"></canvas>
+                </div>
+            </div>
+            <!-- 表格部分 -->
+            <div class="card" id="user">
+                <div class="card-header">
+                    用户管理
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">uid</th>
+                                <th scope="col">昵称</th>
+                                <th scope="col">xxxx</th>
+                                <th scope="col">状态</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">001</th>
+                                <td>张三</td>
+                                <td>xxxxxxx</td>
+                                <td>正常</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>李四</td>
+                                <td>xxxxxxx</td>
+                                <td>正常</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td>王五</td>
+                                <td>xxxxxxxx</td>
+                                <td>封禁</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入 Bootstrap JS 和 jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <!-- 图表配置 -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var ctx = document.getElementById('lineChart').getContext('2d');
+                var lineChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                        datasets: [{
+                            label: '访问次数',
+                            data: [30, 45, 60, 70, 85, 90, 100, 110, 95, 80, 65, 50],
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            x: {
+                                beginAtZero: true
+                            },
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            });
+        </script>
+</body>
+</html>

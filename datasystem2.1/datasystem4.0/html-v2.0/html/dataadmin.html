@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../html/assets/pkg/bootstrap-4.6.1-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../html/assets/css/useradmin.css">
+    <script src="../html/assets/pkg/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+
+        <ul class="nav justify-content-center">
+           
+            <li class="nav-item">
+              <a class="nav-link" href="./useradmin.html">用户管理</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" href="#">数据管理</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="../html/index.html">返回首页</a>
+              </li>
+            <li class="nav-item">
+                <a class="nav-link" href="./dataadd.html">添加数据</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="../html/datadelete.html">删除数据</a>
+              </li>
+
+          </ul>
+
+        
+
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">文章ID</th>
+                    <th scope="col">标题</th>
+                    <th scope="col">链接</th>
+                    <th scope="col">作者</th>
+                    <th scope="col">发布日期</th>
+                    <th scope="col">主要作者</th>
+                    <th scope="col">被引用次数</th>
+                </tr>
+            </thead>
+            <tbody id="datalist">
+                <!-- <tr>
+                    <th scope="row">1</th>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                </tr> -->
+
+
+            </tbody>
+        </table>
+
+
+
+    </div>
+
+    <script src="../html/assets/pkg/bootstrap-4.6.1-dist/js/bootstrap.min.js"></script>
+    <script>
+        fetch('../html/assets/api/getdatalist.php',{
+            method:'GET',
+            mode:"cors",
+            credentials:"include"
+        }).then(response =>{
+            return response.json()
+        }).then(
+            data => {
+                let datalist = document.querySelector("#datalist");
+                data.forEach(v => {
+                    datalist.innerHTML += `
+                    <tr>
+                        <th scope="row">${v[0]}</th>
+                        <td>${v[1]}</td>
+                        <td>${v[2]}</td>
+                        <td>${v[3]}</td>
+                        <td>${v[4]}</td>
+                        <td>${v[5]}</td>
+                        <td>${v[6]}</td>
+                    </tr>
+                    
+                    `;   
+                    
+                });
+                console.log(data)
+            }
+        )
+    </script>
+
+</body>
+
+</html>
